@@ -1,0 +1,20 @@
+스택 ADT
+-객체(Data)
+	0개 이상의 동일한 원소의 나열
+-연산
+	//생성,소멸 연산
+	createStack(s) : 길이가 s인 스택 생성
+	destroyStack(s): 스택 s를 소멸
+	initStack(s): 스택s를 비어있는 스택으로 만듦
+	//상태
+	emptyStack
+	fullStack
+	//데이터 추가 삭제
+	pushStack(s,item): 스택 s에 원소 item을 위에 추가
+	popStack(s):스택 s에서 제일 위에있는 원소를item을 반환 // 제일 위에 있는 원소를 stack밖으로 빼기
+	peekStack(s):스택 s에서 제일 위에있는 원소를 반환 // 제일 위에 있는 원소가 무엇인지
+	//출력
+	printStack(s)
+-스택 구현 방식
+	1.배열사용 
+	2.연결구조사용
