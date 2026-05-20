@@ -29,7 +29,7 @@ int main() {
             fgets(URL, sizeof(URL), stdin);
             URL[strlen(URL) - 1] = '\0';
             pushLinkedStack(myStack, URL);
-            peekStack(myStack, current);
+            peakStack(myStack, current);
             printf("현재 주소:%s\n", current);
             break;
         case 2:
@@ -37,7 +37,7 @@ int main() {
                 printf("열린 창이 없습니다.\n");
                 break;
             }
-            peekStack(myStack, current);
+            peakStack(myStack, current);
             printf("이탈:%s\n",current);
             popLinkedStack(myStack);
             if (emptyLinkedStack(myStack)) {
@@ -46,7 +46,7 @@ int main() {
                 return 0;
             }else
             {
-                peekStack(myStack, current);
+                peakStack(myStack, current);
                 printf("현재창:%s\n", current);
             }
             break;

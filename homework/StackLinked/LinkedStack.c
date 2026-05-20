@@ -69,10 +69,9 @@ void peakStack(LinkedStack* s, stackElement item) {
 void printLinkedStack(LinkedStack* s) {
     printf("Stack:\n");
     printf("Size: %d\n", s->size);
-
     Node* temp = s->head;
-        while (temp != NULL) {
-        printf("temp:%s\n", temp->data);
+    while (temp != NULL) {
+        printf("%d\n", temp->data);
         temp = temp->next;
     }
 }
