@@ -57,7 +57,7 @@ int main() {
             }
             else
             {
-                peekStack(myStack, current);
+                peakStack(myStack, current);
                 printf("현재 주소:%s\n", current);
                 break;
             }

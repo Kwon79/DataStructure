@@ -57,7 +57,7 @@ int popLinkedStack(LinkedStack* s) {
     }
 }
 
-void peekStack(LinkedStack* s, stackElement item) {
+void peakStack(LinkedStack* s, stackElement item) {
     if (!emptyLinkedStack(s)) {
         strncpy_s(item,SIZE,s->head->data, SIZE - 1);
         item[SIZE - 1] = '\0';

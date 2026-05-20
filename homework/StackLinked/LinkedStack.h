@@ -22,5 +22,5 @@ extern int emptyLinkedStack(LinkedStack* s);
 extern int fullLinkedStack(LinkedStack* s);
 extern void pushLinkedStack(LinkedStack* s, stackElement item);
 extern int popLinkedStack(LinkedStack* s);
-extern void peekStack(LinkedStack* s,stackElement item);
+extern void peakStack(LinkedStack* s,stackElement item);
 extern void printLinkedStack(LinkedStack* s);
