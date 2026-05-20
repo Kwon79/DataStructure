@@ -1,7 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
+#define SIZE 100
 
-typedef char stackElement;
+typedef char stackElement[SIZE];
 
 typedef struct node {
     stackElement data;
@@ -18,7 +20,7 @@ extern void destroyLinkedStack(LinkedStack* s);
 extern void initLinkedStack(LinkedStack* s);
 extern int emptyLinkedStack(LinkedStack* s);
 extern int fullLinkedStack(LinkedStack* s);
-extern char pushLinkedStack(LinkedStack* s, stackElement item);
+extern void pushLinkedStack(LinkedStack* s, stackElement item);
 extern int popLinkedStack(LinkedStack* s);
-extern int peekStack(LinkedStack* s);
+extern void peekStack(LinkedStack* s,stackElement item);
 extern void printLinkedStack(LinkedStack* s);

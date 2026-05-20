@@ -18,10 +18,11 @@ void destroyLinkedStack(LinkedStack* s) {
 }
 
 void initLinkedStack(LinkedStack* s) {
+    s->head = NULL;
     s->size = 0;
 }
 
-int fullLinkedList(LinkedStack* s) {
+int fullLinkedStack(LinkedStack* s) {
     return 0;
 }
 
@@ -32,14 +33,13 @@ int emptyLinkedStack(LinkedStack* s) {
     return 0;
 }
 
-char pushLinkedStack(LinkedStack* s, stackElement item) {
+void pushLinkedStack(LinkedStack* s, stackElement item) {
     Node* temp = (Node*)malloc(sizeof(Node));
-    temp->data = item;
+    strncpy_s(temp->data,SIZE,item, SIZE - 1);
+    temp->data[SIZE - 1] = '\0';
     temp->next = s->head;
     s->head = temp;
-
     s->size++;
-    return 1;
 }
 
 int popLinkedStack(LinkedStack* s) {
@@ -53,26 +53,25 @@ int popLinkedStack(LinkedStack* s) {
     }
     else {
         printf("Stack is empty");
-        exit(1);
+        return 0;
     }
 }
 
-int peekStack(LinkedStack* s) {
+void peekStack(LinkedStack* s, stackElement item) {
     if (!emptyLinkedStack(s)) {
-        return s->head->data;
+        strncpy_s(item,SIZE,s->head->data, SIZE - 1);
+        item[SIZE - 1] = '\0';
     }
     else {
-        printf("Stack is empty");
-        exit(1);
+        item[0] = '\0';
     }
 }
-
 void printLinkedStack(LinkedStack* s) {
     printf("Stack:\n");
     printf("Size: %d\n", s->size);
 
     Node* temp = s->head;
-    while (temp != NULL) {
+        while (temp != NULL) {
         printf("temp:%s\n", temp->data);
         temp = temp->next;
     }
