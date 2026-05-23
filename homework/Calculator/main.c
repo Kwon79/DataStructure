@@ -12,8 +12,8 @@ void input() {
 
 int main() {
 	input();
-
-	infixToPostfix(infix, postfix);
+	
+	infixToPostfix(infix,postfix);
 
 	evalPostfix(postfix);
 
