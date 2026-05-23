@@ -1,9 +1,21 @@
-﻿#include "calculator.h"
+﻿#include"ArrayStack.h"
+#include "calculator.h"
+
+char infix[100];
+char postfix[100];
+
+void input() {
+	printf("입력:");
+	fgets(infix, sizeof(infix), stdin);
+	infix[strlen(infix) - 1] = '\0';
+}
 
 int main() {
-	char sample[] = "3+4*(5+6)*7";
-	char postfix[100];
+	input();
 
-	infixToPostfix(sample, postfix);
-	printf("%s\n", postfix);
+	infixToPostfix(infix, postfix);
+
+	evalPostfix(postfix);
+
+	return 0;
 }

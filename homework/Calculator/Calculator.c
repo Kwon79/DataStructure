@@ -5,87 +5,103 @@ int infixToPostfix(char* infix, char* postfix) {
 	int j = 0;
 	ArrayStack* opStack = createArrayStack(100, CHARACTER);
 
-	for (int i = 0; infix[i] != NULL; i++) {
-		if (infix[i] >= "0" && infix[i] <= "9") {
+	for (int i = 0; infix[i] != '\0'; i++) {
+		if (infix[i] >= '0' && infix[i] <= '9') {
 			postfix[j] = infix[i];
 			j++;
 		}
 		else if (infix[i] == '+' || infix[i] == '-' ||
 			infix[i] == '*' || infix[i] == '/') {
-
 			while (!emptyArrayStack(opStack)) {
 				stackElement prevOp = peekArrayStack(opStack);
 
-				if (precedence(infix[i]) <= precedence(prevOp)) {
-					postfix[j] = popArrayStack(opStack);
+				if (precedence(infix[i]) <= precedence(prevOp.operator)) {
+					postfix[j] = popArrayStack(opStack).operator;
 					j++;
 				}
 				else {
 					break;
 				}
 			}
-
-			pushArrayStack(opStack, infix[i]);
+			stackElement newOp;
+			newOp.operator = infix[i];
+			pushArrayStack(opStack, newOp);
 		}
 		else if (infix[i] == '(') {
-			pushArrayStack(opStack, infix[i]);
+			stackElement newOp;
+			newOp.operator = infix[i];
+			pushArrayStack(opStack, newOp);
 		}
 		else if (infix[i] == ')') {
 			do
 			{
 				stackElement prevOp = popArrayStack(opStack);
 
-				if (prevOp != '(') {
-					postfix[j] = prevOp;
-					j++;
-				}
-				if (prevOp == '(') {
+
+				if (prevOp.operator == '(') {
 					break;
 				}
-			} while (emptyArrayStack(opStack));
+				else {
+					postfix[j] = prevOp.operator;
+					j++;
+				}
+			} while (1);
 		}
 	}
+	while (!emptyArrayStack(opStack)) {
+		postfix[j] = popArrayStack(opStack).operator;
+		j++;
+	}
 
-	postfix[j] = NULL;
+	postfix[j] = '\0';
+
+	
 }
 
 int evalPostfix(char* postfix) {
 	ArrayStack* valueStack = createArrayStack(100, INTEGER);
 	int i = 0;
 
-	while (postfix[i] != NULL) {
+	while (postfix[i] != '\0') {
 		if (postfix[i] >= '0' && postfix[i] <= '9') {
-			pushArrayStack(valueStack, (int)(postfix[i] - '0'));
+			stackElement elem;
+			elem.value = postfix[i] - '0';
+			pushArrayStack(valueStack, elem);
 		}
 		else if (postfix[i] == '*') {
-			int i1 = popArrayStack(valueStack);
-			int i2 = popArrayStack(valueStack);
+			stackElement result;
+			int i1 = popArrayStack(valueStack).value;
+			int i2 = popArrayStack(valueStack).value;
+			result.value = i1 * i2;
 
-			pushArrayStack(valueStack, i1 * i2);
+			pushArrayStack(valueStack, result);
 		}
 		else if (postfix[i] == '/') {
-			int i1 = popArrayStack(valueStack);
-			int i2 = popArrayStack(valueStack);
-
-			pushArrayStack(valueStack, i1 / i2);
+			int i1 = popArrayStack(valueStack).value;
+			int i2 = popArrayStack(valueStack).value;
+			stackElement result;
+			result.value = i2 / i1;
+			pushArrayStack(valueStack,result);
 		}
 		else if (postfix[i] == '+') {
-			int i1 = popArrayStack(valueStack);
-			int i2 = popArrayStack(valueStack);
-
-			pushArrayStack(valueStack, i1 + i2);
+			int i1 = popArrayStack(valueStack).value;
+			int i2 = popArrayStack(valueStack).value;
+			stackElement result;
+			result.value = i1 + i2;
+			pushArrayStack(valueStack, result);
 		}
 		else if (postfix[i] == '-') {
-			int i1 = popArrayStack(valueStack);
-			int i2 = popArrayStack(valueStack);
-
-			pushArrayStack(valueStack, i1 - i2);
+			int i1 = popArrayStack(valueStack).value;
+			int i2 = popArrayStack(valueStack).value;
+			stackElement result;
+			result.value = i2 - i1;
+			pushArrayStack(valueStack,result);	
 		}
 
 		i++;
 	}
-
-	return popArrayStack(valueStack);
+	
+	return popArrayStack(valueStack).value;
 }
 
 int precedence(char op) {
@@ -105,3 +121,6 @@ int precedence(char op) {
 		return 0;
 	}
 }
+
+
+
