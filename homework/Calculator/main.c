@@ -9,7 +9,7 @@ void input() {
 	fgets(infix, sizeof(infix), stdin);
 	infix[strlen(infix) - 1] = '\0';
 }
-
+ 
 int main() {
 	input();
 	

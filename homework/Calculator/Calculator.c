@@ -249,7 +249,7 @@ int evalPostfix(char* postfix) {
         }
 
         i++;
-    }
+    } 
 
     int result = popArrayStack(valueStack).value;
 

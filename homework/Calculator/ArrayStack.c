@@ -6,7 +6,7 @@ ArrayStack* createArrayStack(int size, stackType type) {
 	re->top = -1;
 	re->size = size;
 	re->type = type;
-
+	 
 	return re;
 }
 

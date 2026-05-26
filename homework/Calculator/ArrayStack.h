@@ -15,7 +15,7 @@ typedef struct arrayStack {
 	int top;
 	int size;
 	stackType type;
-} ArrayStack;
+} ArrayStack; 
 
 extern ArrayStack* createArrayStack(int size, stackType type);
 extern ArrayStack* destroyArrayStack(ArrayStack* s);
