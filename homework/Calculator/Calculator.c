@@ -3,263 +3,279 @@
 
 int infixToPostfix(char* infix, char* postfix) {
 
-	int j = 0;
+    int j = 0;
 
-	ArrayStack* opStack = createArrayStack(100, CHARACTER);
+    postfix[0] = '\0';
 
-	printf("Transform:\n");
+    ArrayStack* opStack = createArrayStack(100, CHARACTER);
 
-	for (int i = 0; infix[i] != '\0'; i++) {
+    printf("Transform:\n");
 
-		if (infix[i] == ' ') {
-			continue;
-		}
+    for (int i = 0; infix[i] != '\0'; i++) {
 
-		if (infix[i] >= '0' && infix[i] <= '9') {
+        if (infix[i] == ' ') {
+            continue;
+        }
 
-			postfix[j] = infix[i];
-			j++;
-			postfix[j] = '\0';
+        // 숫자
+        if (infix[i] >= '0' && infix[i] <= '9') {
 
-			printf("- Postfix: %s | Stack: ", postfix);
+            postfix[j++] = infix[i];
+            postfix[j++] = ' ';
+            postfix[j] = '\0';
 
-			for (int k = 0; k <= opStack->top; k++) {
-				printf("%c ", opStack->data[k].operator);
-			}
+            printf("- Postfix: %s| Stack: ", postfix);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= opStack->top; k++) {
+                printf("%c ", opStack->data[k].operator);
+            }
 
-		else if (infix[i] == '+' || infix[i] == '-' ||
-			infix[i] == '*' || infix[i] == '/') {
+            printf("\n");
+        }
 
-			while (!emptyArrayStack(opStack)) {
+        // 연산자
+        else if (infix[i] == '+' || infix[i] == '-' ||
+            infix[i] == '*' || infix[i] == '/') {
 
-				stackElement prevOp = peekArrayStack(opStack);
+            while (!emptyArrayStack(opStack)) {
 
-				if (precedence(infix[i]) <= precedence(prevOp.operator)) {
+                stackElement prevOp = peekArrayStack(opStack);
 
-					postfix[j] = popArrayStack(opStack).operator;
-					j++;
-					postfix[j] = '\0';
-				}
-				else {
-					break;
-				}
-			}
+                if (precedence(infix[i]) <= precedence(prevOp.operator)) {
 
-			stackElement newOp;
-			newOp.operator = infix[i];
+                    postfix[j++] = popArrayStack(opStack).operator;
+                    postfix[j++] = ' ';
+                    postfix[j] = '\0';
+                }
+                else {
+                    break;
+                }
+            }
 
-			pushArrayStack(opStack, newOp);
+            stackElement newOp;
+            newOp.operator = infix[i];
 
-			printf("- Postfix: %s | Stack: ", postfix);
+            pushArrayStack(opStack, newOp);
 
-			for (int k = 0; k <= opStack->top; k++) {
-				printf("%c ", opStack->data[k].operator);
-			}
+            printf("- Postfix: %s| Stack: ", postfix);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= opStack->top; k++) {
+                printf("%c ", opStack->data[k].operator);
+            }
 
-		else if (infix[i] == '(') {
+            printf("\n");
+        }
 
-			stackElement newOp;
-			newOp.operator = infix[i];
+        // 여는 괄호
+        else if (infix[i] == '(') {
 
-			pushArrayStack(opStack, newOp);
+            stackElement newOp;
+            newOp.operator = infix[i];
 
-			printf("- Postfix: %s | Stack: ", postfix);
+            pushArrayStack(opStack, newOp);
 
-			for (int k = 0; k <= opStack->top; k++) {
-				printf("%c ", opStack->data[k].operator);
-			}
+            printf("- Postfix: %s| Stack: ", postfix);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= opStack->top; k++) {
+                printf("%c ", opStack->data[k].operator);
+            }
 
-		else if (infix[i] == ')') {
+            printf("\n");
+        }
 
-			do {
+        // 닫는 괄호
+        else if (infix[i] == ')') {
 
-				stackElement prevOp = popArrayStack(opStack);
+            while (!emptyArrayStack(opStack)) {
 
-				if (prevOp.operator == '(') {
-					break;
-				}
-				else {
+                stackElement prevOp = popArrayStack(opStack);
 
-					postfix[j] = prevOp.operator;
-					j++;
-					postfix[j] = '\0';
-				}
+                if (prevOp.operator == '(') {
+                    break;
+                }
 
-			} while (1);
+                postfix[j++] = prevOp.operator;
+                postfix[j++] = ' ';
+                postfix[j] = '\0';
+            }
 
-			printf("- Postfix: %s | Stack: ", postfix);
+            printf("- Postfix: %s| Stack: ", postfix);
 
-			for (int k = 0; k <= opStack->top; k++) {
-				printf("%c ", opStack->data[k].operator);
-			}
+            for (int k = 0; k <= opStack->top; k++) {
+                printf("%c ", opStack->data[k].operator);
+            }
 
-			printf("\n");
-		}
-	}
+            printf("\n");
+        }
+    }
 
-	while (!emptyArrayStack(opStack)) {
+    // 남은 연산자 전부 pop
+    while (!emptyArrayStack(opStack)) {
 
-		postfix[j] = popArrayStack(opStack).operator;
-		j++;
-		postfix[j] = '\0';
-	}
+        postfix[j++] = popArrayStack(opStack).operator;
+        postfix[j++] = ' ';
+        postfix[j] = '\0';
+    }
 
-	printf("- Postfix: %s | Stack: ", postfix);
+    printf("- Postfix: %s| Stack: ", postfix);
 
-	for (int k = 0; k <= opStack->top; k++) {
-		printf("%c ", opStack->data[k].operator);
-	}
+    for (int k = 0; k <= opStack->top; k++) {
+        printf("%c ", opStack->data[k].operator);
+    }
 
-	printf("\n");
+    printf("\n");
 
-	printf("\n- Result: %s\n\n", postfix);
+    printf("\n- Result: %s\n\n", postfix);
 
-	return 1;
+    destroyArrayStack(opStack);
+
+    return 1;
 }
 
 int evalPostfix(char* postfix) {
 
-	ArrayStack* valueStack = createArrayStack(100, INTEGER);
+    ArrayStack* valueStack = createArrayStack(100, INTEGER);
 
-	int i = 0;
+    int i = 0;
 
-	printf("Eval:\n");
-	printf("- Postfix: %s\n", postfix);
+    printf("Eval:\n");
+    printf("- Postfix: %s\n", postfix);
 
-	while (postfix[i] != '\0') {
+    while (postfix[i] != '\0') {
 
-		if (postfix[i] >= '0' && postfix[i] <= '9') {
+        if (postfix[i] == ' ') {
+            i++;
+            continue;
+        }
 
-			stackElement elem;
+        
+        if (postfix[i] >= '0' && postfix[i] <= '9') {
 
-			elem.value = postfix[i] - '0';
+            stackElement elem;
 
-			pushArrayStack(valueStack, elem);
+            elem.value = postfix[i] - '0';
 
-			printf("- Current: %c | Stack: ", postfix[i]);
+            pushArrayStack(valueStack, elem);
 
-			for (int k = 0; k <= valueStack->top; k++) {
-				printf("%d ", valueStack->data[k].value);
-			}
+            printf("- Current: %c | Stack: ", postfix[i]);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= valueStack->top; k++) {
+                printf("%d ", valueStack->data[k].value);
+            }
 
-		else if (postfix[i] == '*') {
+            printf("\n");
+        }
 
-			stackElement result;
+        
+        else if (postfix[i] == '*') {
 
-			int i1 = popArrayStack(valueStack).value;
-			int i2 = popArrayStack(valueStack).value;
+            int i1 = popArrayStack(valueStack).value;
+            int i2 = popArrayStack(valueStack).value;
 
-			result.value = i2 * i1;
+            stackElement result;
 
-			pushArrayStack(valueStack, result);
+            result.value = i2 * i1;
 
-			printf("- Current: %c | Stack: ", postfix[i]);
+            pushArrayStack(valueStack, result);
 
-			for (int k = 0; k <= valueStack->top; k++) {
-				printf("%d ", valueStack->data[k].value);
-			}
+            printf("- Current: %c | Stack: ", postfix[i]);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= valueStack->top; k++) {
+                printf("%d ", valueStack->data[k].value);
+            }
 
-		else if (postfix[i] == '/') {
+            printf("\n");
+        }
 
-			int i1 = popArrayStack(valueStack).value;
-			int i2 = popArrayStack(valueStack).value;
+       
+        else if (postfix[i] == '/') {
 
-			stackElement result;
+            int i1 = popArrayStack(valueStack).value;
+            int i2 = popArrayStack(valueStack).value;
 
-			result.value = i2 / i1;
+            stackElement result;
 
-			pushArrayStack(valueStack, result);
+            result.value = i2 / i1;
 
-			printf("- Current: %c | Stack: ", postfix[i]);
+            pushArrayStack(valueStack, result);
 
-			for (int k = 0; k <= valueStack->top; k++) {
-				printf("%d ", valueStack->data[k].value);
-			}
+            printf("- Current: %c | Stack: ", postfix[i]);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= valueStack->top; k++) {
+                printf("%d ", valueStack->data[k].value);
+            }
 
-		else if (postfix[i] == '+') {
+            printf("\n");
+        }
 
-			int i1 = popArrayStack(valueStack).value;
-			int i2 = popArrayStack(valueStack).value;
+          else if (postfix[i] == '+') {
 
-			stackElement result;
+            int i1 = popArrayStack(valueStack).value;
+            int i2 = popArrayStack(valueStack).value;
 
-			result.value = i2 + i1;
+            stackElement result;
 
-			pushArrayStack(valueStack, result);
+            result.value = i2 + i1;
 
-			printf("- Current: %c | Stack: ", postfix[i]);
+            pushArrayStack(valueStack, result);
 
-			for (int k = 0; k <= valueStack->top; k++) {
-				printf("%d ", valueStack->data[k].value);
-			}
+            printf("- Current: %c | Stack: ", postfix[i]);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= valueStack->top; k++) {
+                printf("%d ", valueStack->data[k].value);
+            }
 
-		else if (postfix[i] == '-') {
+            printf("\n");
+        }
 
-			int i1 = popArrayStack(valueStack).value;
-			int i2 = popArrayStack(valueStack).value;
+        else if (postfix[i] == '-') {
 
-			stackElement result;
+            int i1 = popArrayStack(valueStack).value;
+            int i2 = popArrayStack(valueStack).value;
 
-			result.value = i2 - i1;
+            stackElement result;
 
-			pushArrayStack(valueStack, result);
+            result.value = i2 - i1;
 
-			printf("- Current: %c | Stack: ", postfix[i]);
+            pushArrayStack(valueStack, result);
 
-			for (int k = 0; k <= valueStack->top; k++) {
-				printf("%d ", valueStack->data[k].value);
-			}
+            printf("- Current: %c | Stack: ", postfix[i]);
 
-			printf("\n");
-		}
+            for (int k = 0; k <= valueStack->top; k++) {
+                printf("%d ", valueStack->data[k].value);
+            }
 
-		i++;
-	}
+            printf("\n");
+        }
 
-	int result = popArrayStack(valueStack).value;
+        i++;
+    }
 
-	printf("\n- Result: %d\n", result);
+    int result = popArrayStack(valueStack).value;
 
-	return result;
+    printf("\n- Result: %d\n", result);
+
+    destroyArrayStack(valueStack);
+
+    return result;
 }
 
 int precedence(char op) {
 
-	switch (op) {
+    switch (op) {
 
-	case '*':
-	case '/':
-		return 2;
+    case '*':
+    case '/':
+        return 2;
 
-	case '+':
-	case '-':
-		return 1;
+    case '+':
+    case '-':
+        return 1;
 
-	case '(':
-		return 0;
+    case '(':
+        return 0;
 
-	default:
-		return 0;
-	}
+    default:
+        return 0;
+    }
 }

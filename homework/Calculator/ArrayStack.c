@@ -10,6 +10,11 @@ ArrayStack* createArrayStack(int size, stackType type) {
 	return re;
 }
 
+ArrayStack* destroyArrayStack(ArrayStack* s) {
+	free(s->data);
+	free(s);
+}
+
 int emptyArrayStack(ArrayStack* s) {
 	return s->top == -1;
 }

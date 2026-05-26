@@ -15,7 +15,7 @@ void destoryArrayQueue(ArrayQueue* q) {
     free(q);
 }
 int emptyArrayQueue(ArrayQueue* q) {
-    return q->rear = q->front;
+    return q->rear == q->front;
 }
 
 int fullArrayQueue(ArrayQueue* q) {
@@ -46,7 +46,7 @@ queueElement dequeueArrayQueue(ArrayQueue* q) {
 
 void printQueue(ArrayQueue* q) {
     printf("Array Queue:\n");
-    printf("Front: %d,Rear: %d", q->data[q->front], q->data[q->rear]);
+    printf("Front: %d,Rear: %d\n", q->data[q->front], q->data[q->rear-1]);
 
     if (emptyArrayQueue(q)) {
         return;
@@ -55,7 +55,7 @@ void printQueue(ArrayQueue* q) {
     int rear = q->rear;
     int front = q->front;
 
-    while (front != rear) {
+    while (front!= rear) {
         printf("%d", q->data[front]);
         front = (front + 1) % q->size;
     }

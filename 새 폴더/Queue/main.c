@@ -12,7 +12,13 @@ int main() {
 	printQueue(myQueue);
 
 	dequeueArrayQueue(myQueue);
+
+	printQueue(myQueue);
+
 	dequeueArrayQueue(myQueue);
+
+	printQueue(myQueue);
+
 	dequeueArrayQueue(myQueue);
 
 	printQueue(myQueue);
